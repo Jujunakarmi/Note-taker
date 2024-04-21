@@ -4,9 +4,10 @@ const express = require('express');
 
 const app = express();
 
-const PORT= process.env.PORT;
+const PORT= process.env.PORT || 3001;
 
 const notesRoutes= require('./routes/notesRoutes')
+const apiRoutes =require('./routes/apiRoutes')
 
 //Middleware
 app.use(express.static('public'));
@@ -20,6 +21,7 @@ app.get('/', (req,res) =>
 
 
 app.use('/notes', notesRoutes);
+app.use('/api', apiRoutes)
 
 
 //Listener port

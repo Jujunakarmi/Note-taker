@@ -42,8 +42,8 @@ Click on Get Started to be taken to the app. Add a new note by typing title and 
 
 ## Screenshots
 Here are some of the screenshots of the application.
-![Screenshot image of the application.](./assets/screenshots/screenshot-1.png)
 ![Screenshot image of the application.](./assets/screenshots/screenshot-2.png)
+![Screenshot image of the application.](./assets/screenshots/screenshot-1.png)
 
 
 ## License

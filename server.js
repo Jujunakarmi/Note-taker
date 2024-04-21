@@ -4,7 +4,7 @@ const express = require('express');
 
 const app = express();
 
-const PORT= process.env.port;
+const PORT= process.env.PORT;
 
 const notesRoutes= require('./routes/notesRoutes')
 

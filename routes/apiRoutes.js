@@ -11,18 +11,18 @@ app.get('/notes', (req, res) => {
 });
 
 app.post('/notes', (req, res) => {
-   
+
     let newNote = req.body
 
     fs.readFile(path.join(__dirname, '../db/db.json'), 'utf-8', (err, data) => {
-    
+
         if (err) {
             console.log(err)
         }
         const parseData = JSON.parse(data)
-        const updatedNote={
+        const updatedNote = {
             title: newNote.title,
-            text : newNote.text,
+            text: newNote.text,
             id: uuidv4()
         }
         parseData.push(updatedNote)
@@ -31,7 +31,7 @@ app.post('/notes', (req, res) => {
             if (err) {
                 console.log(err)
             }
-            
+
             res.status(200).json(data)
         })
 
@@ -39,13 +39,34 @@ app.post('/notes', (req, res) => {
 
 });
 
-app.delete('/notes/:id',(req,res) => {
+app.delete('/notes/:id', (req, res) => {
     // read the id using req.params 
-    //read data from the file using fs.read
-    //convert it to object fromat usong json.parse
-    //use array.filter method to filter all the objects which are not euqls to the id parse in req.params
-    //use fs.write to  update file with new data
-    //res.status.json to send the appropraite status and new json data
-})
+    fs.readFile(path.join(__dirname, '../db/db.json'), 'utf-8', (err, data) => {
+
+        if (err) {
+            throw(err)
+        }
+
+        const parseData = JSON.parse(data)
+        parseData.splice(req.params.id, 1);
+        updateDb()
+        console.log('Deleted '+ req.params.id)
+        //read data from the file using fs.read
+        //convert it to object fromat usong json.parse
+        //use array.filter method to filter all the objects which are not equals to the id parse in req.params
+        //use fs.write to  update file with new data
+        //res.status.json to send the appropraite status and new json data
+
+        function updateDb() {
+            fs.writeFile(path.join(__dirname, '../db/db.json'), JSON.stringify(parseData), (err, data) => {
+                if (err) {
+                    throw(err)
+                }
+
+                res.status(200).json(data)
+            });
+        }
+    })
+});
 
 module.exports = app;

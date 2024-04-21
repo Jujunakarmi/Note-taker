@@ -5,20 +5,22 @@ const express = require('express');
 const app = express();
 
 const PORT= 3001;
-const path= require('path');
+
+const notesRoutes= require('./routes/notesRoutes')
 
 //Middleware
 app.use(express.static('public'));
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 
-
-//Get route for homepage
+//home route
 app.get('/', (req,res) => 
     res.sendFile(path.join(__dirname, '/public/index.html'))
 );
 
-app.get('/notes', (req,res) => {
-    res.sendFile(path.join(__dirname,'/public/notes.html'));
-})
+
+app.use('/notes', notesRoutes);
+
 
 //Listener port
 app.listen(PORT, () =>console.log(`Server is listening on http://localhost:${PORT}`));

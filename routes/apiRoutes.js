@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs')
 const app = require('express').Router()
+//uuid gives unique id which helps to delete the specific object
 const { v4: uuidv4 } = require('uuid');
 
 
@@ -20,9 +21,11 @@ app.post('/notes', (req, res) => {
             console.log(err)
         }
         const parseData = JSON.parse(data)
+        //updated note after parsing
         const updatedNote = {
             title: newNote.title,
             text: newNote.text,
+            //getting id into object
             id: uuidv4()
         }
         parseData.push(updatedNote)
@@ -40,27 +43,24 @@ app.post('/notes', (req, res) => {
 });
 
 app.delete('/notes/:id', (req, res) => {
-    // read the id using req.params 
+    // read the id using req.params from first array
     fs.readFile(path.join(__dirname, '../db/db.json'), 'utf-8', (err, data) => {
 
         if (err) {
-            throw(err)
+            throw (err)
         }
-
+    // parse the data into objects
         const parseData = JSON.parse(data)
+        //used splice method to id param to delete the id
         parseData.splice(req.params.id, 1);
         updateDb()
-        console.log('Deleted '+ req.params.id)
-        //read data from the file using fs.read
-        //convert it to object fromat usong json.parse
-        //use array.filter method to filter all the objects which are not equals to the id parse in req.params
-        //use fs.write to  update file with new data
-        //res.status.json to send the appropraite status and new json data
+        console.log('Deleted ' + req.params.id)
 
+     //again write the whole thing again
         function updateDb() {
             fs.writeFile(path.join(__dirname, '../db/db.json'), JSON.stringify(parseData), (err, data) => {
                 if (err) {
-                    throw(err)
+                    throw (err)
                 }
 
                 res.status(200).json(data)
